@@ -1,42 +1,34 @@
 import { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 import axios from 'axios';
 
-import type { GameItem, ShortScreenshots } from '../interfaces';
+import type { GameDetail, ShortScreenshots } from '../interfaces';
 
 function Game() {
-  const API_KEY = import.meta.env.VITE_API_KEY;
   const BASE_URL = import.meta.env.VITE_BASE_URL;
-  const [game, setGame] = useState<GameItem>();
+  const [game, setGame] = useState<GameDetail>();
   const [imagesList, setImagesList] = useState<ShortScreenshots[]>([]);
-  const [gameDlsList, setGameDlsList] = useState<GameItem[]>([]);
-  const [gameOtherList, setGameOtherList] = useState<GameItem[]>([]);
 
-  const { slug } = useParams();
+  const { id } = useParams();
 
   useEffect(() => {
-    if (!slug) return;
+    if (!id) return;
 
     const fetchGame = async () => {
       try {
-        const [gameRes, shotsRes, gameDlsRes, gameOtherRes] = await Promise.allSettled([
-          axios.get(`${BASE_URL}/games/${slug}?key=${API_KEY}`),
-          axios.get(`${BASE_URL}/games/${slug}/screenshots?key=${API_KEY}`),
-          axios.get(`${BASE_URL}/games/${slug}/additions?key=${API_KEY}`),
-          axios.get(`${BASE_URL}/games/${slug}/game-series?key=${API_KEY}`),
-        ]);
-        if (gameRes.status === 'fulfilled') setGame(gameRes.value.data.results);
-        if (shotsRes.status === 'fulfilled') setImagesList(shotsRes.value.data.results);
-        if (gameDlsRes.status === 'fulfilled') setGameDlsList(gameDlsRes.value.data.results);
-        if (gameOtherRes.status === 'fulfilled') setGameOtherList(gameOtherRes.value.data.results);
+        const { data } = await axios.get<GameDetail>(`${BASE_URL}/api/game`, { params: { id } });
+        setGame(data);
+        setImagesList(data.screenshots || []);
       } catch (e) {
         console.log(`Ошибка загрузки ${e instanceof Error ? e.message : e}`);
       }
     };
 
     fetchGame();
-  }, [slug]);
+  }, [id]);
+
+  const requirements = game?.minimum_system_requirements;
 
   return (
     <>
@@ -45,13 +37,15 @@ function Game() {
           <div className="relative flex items-center min-h-[500px] w-full overflow-hidden">
             <div className="container relative w-full mx-auto z-1">
               <h1 className="text-4xl md:text-6xl font-black tracking-tight text-white uppercase drop-shadow-md">
-                {game.name}
+                {game.title}
               </h1>
-              <span className="px-2.5 py-1 text-white">{game.released}</span>
+              <div className="px-2.5 py-1 text-white">
+                {game.short_description} <br /> {game.release_date}
+              </div>
             </div>
             <img
-              src={game.background_image || game.background_image_additional}
-              alt={game.name}
+              src={game.thumbnail}
+              alt={game.title}
               className="absolute top-0 w-full h-full object-cover z-0"
             />
 
@@ -59,34 +53,33 @@ function Game() {
           </div>
 
           <div className="container mx-auto mt-10">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+            <div className="grid grid-cols-1 lg:grid-cols-3 items-start gap-8 mb-8">
               <div className="lg:col-span-2 space-y-4">
-                <span className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">
+                <span className="block text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-white mb-3">
                   Доступно на:
                 </span>
                 <div className="flex flex-wrap gap-1.5">
-                  {game.platforms &&
-                    game.platforms.map((item, idx) => (
-                      <span
-                        key={idx}
-                        className="text-xs bg-white text-slate-600 font-medium px-2.5 py-1 rounded-md border border-slate-200 shadow-sm">
-                        {item.platform.name}
-                      </span>
-                    ))}
+                  <span className="text-xs bg-white font-bolt text-slate-600 px-2.5 py-1 rounded-md border border-slate-200 shadow-sm dark:bg-neutral-800 dark:text-white dark:border-neutral-700">
+                    {game.platform}
+                  </span>
                 </div>
 
-                <h3 className="text-2xl font-bold text-slate-900 tracking-wide mt-10">О проекте</h3>
-                <div className="text-slate-600 leading-relaxed text-base md:text-lg space-y-4">
-                  {game.description_raw}
+                <h3 className="text-2xl font-bold text-slate-600 tracking-wide mt-10 dark:text-white">
+                  О проекте
+                </h3>
+                <div className="text-slate-500 leading-relaxed text-base md:text-lg space-y-4 dark:text-neutral-300">
+                  {game.description}
                 </div>
 
-                <h3 className="text-xl font-bold text-slate-900 tracking-wide mt-5">Медиа</h3>
+                <h3 className="text-2xl font-bold text-slate-900 tracking-wide mt-5 dark:text-white">
+                  Медиа
+                </h3>
                 <div className="grid grid-cols-3 sm:grid-cols-2 gap-4">
                   {imagesList &&
                     imagesList.map((item) => (
                       <div
                         key={item.id}
-                        className="aspect-video bg-slate-200 rounded-xl overflow-hidden group border border-slate-200 shadow-sm">
+                        className="aspect-video bg-slate-200 rounded-xl overflow-hidden group border border-slate-200 shadow-sm dark:bg-neutral-800 dark:border-neutral-700">
                         <img
                           src={item.image}
                           alt=""
@@ -95,124 +88,86 @@ function Game() {
                       </div>
                     ))}
                 </div>
-
-                <div className="space-y-3 pt-4 border-slate-200">
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400">
-                    Теги
-                  </h4>
-                  <div className="flex flex-wrap gap-2">
-                    {game.tags &&
-                      game.tags.map((tag, idx) => (
-                        <span
-                          key={idx}
-                          className="text-xs bg-white border border-slate-200 text-slate-600 px-3 py-1 rounded-full shadow-sm hover:bg-slate-50 transition cursor-default">
-                          {tag.name}
-                        </span>
-                      ))}
-                  </div>
-                </div>
               </div>
 
-              <div className="items-start space-y-6 bg-slate-50 p-6 rounded-2xl border border-slate-100">
+              <div className="space-y-6 bg-slate-50 p-6 rounded-2xl border border-slate-100 dark:bg-neutral-900 dark:border-neutral-800">
                 <div>
-                  <h3 className="text-lg font-bold text-slate-900 tracking-wide border-b border-slate-200 pb-3 mb-4">
+                  <h3 className="text-lg font-bold text-slate-900 tracking-wide border-b border-slate-200 pb-3 mb-4 dark:text-white dark:border-neutral-700">
                     Детали издания
                   </h3>
 
                   <div className="grid grid-cols-1 gap-4 text-sm">
                     <div className="flex flex-col gap-1">
-                      <span className="text-slate-400 font-semibold text-xs uppercase tracking-wider">
+                      <span className="text-slate-600 font-black text-xs uppercase tracking-wider dark:text-white">
                         Дата релиза
                       </span>
-                      {game.released && (
-                        <span className="text-slate-800 font-medium">{game.released}</span>
-                      )}
-                    </div>
-
-                    <div className="flex flex-col gap-1">
-                      <span className="text-slate-400 font-semibold text-xs uppercase tracking-wider">
-                        Разработчик
-                      </span>
-                      {game.developers &&
-                        game.developers.map((item) => (
-                          <span key={item.id} className="text-slate-800 font-medium">
-                            {item.name}
-                          </span>
-                        ))}
-                    </div>
-
-                    <div className="flex flex-col gap-1">
-                      <span className="text-slate-400 font-semibold text-xs uppercase tracking-wider">
-                        Издатель
-                      </span>
-                      {game.publishers &&
-                        game.publishers.map((item) => (
-                          <span key={item.id} className="text-slate-800 font-medium">
-                            {item.name}
-                          </span>
-                        ))}
-                    </div>
-
-                    <div className="flex flex-col gap-1">
-                      <span className="text-slate-400 font-semibold text-xs uppercase tracking-wider">
-                        Категории
-                      </span>
-                      {game.genres && (
-                        <span className="text-slate-800 font-medium">
-                          {game.genres.map((item) => item.name).join(', ')}
+                      {game.release_date && (
+                        <span className="text-slate-800 font-medium dark:text-neutral-200">
+                          {game.release_date}
                         </span>
                       )}
                     </div>
 
                     <div className="flex flex-col gap-1">
-                      <span className="text-slate-400 font-semibold text-xs uppercase tracking-wider">
-                        Дополнения (DLC)
+                      <span className="text-slate-600 font-black text-xs uppercase tracking-wider dark:text-white">
+                        Разработчик
                       </span>
-                      {gameDlsList &&
-                        gameDlsList.map((dlc) => (
-                          <Link key={dlc.id} to={`/games/${dlc.slug}`}>
-                            {dlc.name}
-                          </Link>
-                        ))}
+                      {game.developer && (
+                        <span className="text-slate-800 font-medium dark:text-neutral-200">
+                          {game.developer}
+                        </span>
+                      )}
                     </div>
 
                     <div className="flex flex-col gap-1">
-                      <span className="text-slate-400 font-semibold text-xs uppercase tracking-wider">
-                        Другие игры серии
+                      <span className="text-slate-600 font-black text-xs uppercase tracking-wider dark:text-white">
+                        Издатель
                       </span>
-                      {gameOtherList &&
-                        gameOtherList.map((game) => (
-                          <span key={game.id} className="text-slate-700">
-                            <Link to={`/games/${game.slug}`}>{game.name}</Link>
-                          </span>
-                        ))}
+                      {game.publisher && (
+                        <span className="text-slate-800 font-medium dark:text-neutral-200">
+                          {game.publisher}
+                        </span>
+                      )}
+                    </div>
+
+                    <div className="flex flex-col gap-1">
+                      <span className="text-slate-600 font-black text-xs uppercase tracking-wider dark:text-white">
+                        Жанр
+                      </span>
+                      {game.genre && (
+                        <span className="text-slate-800 font-medium dark:text-neutral-200">
+                          {game.genre}
+                        </span>
+                      )}
+                    </div>
+
+                    <div className="flex flex-col gap-1">
+                      <span className="text-slate-600 font-black text-xs uppercase tracking-wider dark:text-white">
+                        Статус
+                      </span>
+                      {game.status && (
+                        <span className="text-slate-800 font-medium dark:text-neutral-200">
+                          {game.status}
+                        </span>
+                      )}
                     </div>
                   </div>
                 </div>
 
-                <div className="flex flex-col gap-4 pt-4 border-t border-slate-200">
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 shrink-0 rounded-full bg-emerald-50 border-4 border-emerald-500 flex items-center justify-center">
-                      <span className="text-base font-black text-emerald-700">
-                        {game.metacritic}
-                      </span>
-                    </div>
-                    <div>
-                      <h4 className="text-sm font-bold text-slate-800">Metascore</h4>
-                      <p className="text-xs text-slate-400">Всеобщее признание</p>
-                    </div>
+                {requirements && (
+                  <div className="flex flex-col gap-3 pt-4 border-t border-slate-200 dark:border-neutral-700">
+                    <h4 className="text-sm font-black text-slate-800 dark:text-white">
+                      Минимальные системные требования
+                    </h4>
+                    <ul className="text-xs text-slate-600 space-y-1.5 dark:text-neutral-200">
+                      {requirements.os && <li>ОС: {requirements.os}</li>}
+                      {requirements.processor && <li>Процессор: {requirements.processor}</li>}
+                      {requirements.memory && <li>Память: {requirements.memory}</li>}
+                      {requirements.graphics && <li>Графика: {requirements.graphics}</li>}
+                      {requirements.storage && <li>Накопитель: {requirements.storage}</li>}
+                    </ul>
                   </div>
-
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 shrink-0 rounded-full bg-amber-50 border-4 border-amber-400 flex items-center justify-center">
-                      <span className="text-base font-black text-amber-700">4.7</span>
-                    </div>
-                    <div>
-                      <h4 className="text-sm font-bold text-slate-800">RAWG Rating</h4>
-                      <p className="text-xs text-slate-400">На основе отзывов</p>
-                    </div>
-                  </div>
-                </div>
+                )}
               </div>
             </div>
           </div>

@@ -8,12 +8,10 @@ function GameSortDropdown() {
   const currentSort = useAppSelector((state) => state.filterSlice.currentSort);
   const dispatch = useAppDispatch();
 
-  console.log(currentSort);
-
   return (
     <div className="relative inline-block text-left">
       <div
-        className="inline-flex justify-center items-center gap-x-1.5 rounded-md bg-slate-900 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-slate-800 cursor-pointer"
+        className="inline-flex justify-center items-center gap-x-1.5 rounded-md bg-[#181818] px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-slate-800 dark:hover:bg-neutral-800 cursor-pointer"
         onClick={() => {
           setActiveSortPopup(!activeSortPopup);
         }}>
@@ -31,7 +29,7 @@ function GameSortDropdown() {
       </div>
 
       {activeSortPopup && (
-        <div className="absolute right-0 z-10 w-42 origin-top-left rounded-md bg-white shadow-lg focus:outline-none py-1">
+        <div className="absolute right-0 z-10 w-42 origin-top-left rounded-md bg-white shadow-lg focus:outline-none py-1 dark:bg-[#181818]">
           {sortOptions.map((item, index) => (
             <div
               key={index}
@@ -39,7 +37,7 @@ function GameSortDropdown() {
                 dispatch(setCurrentSort({ ...item }));
                 setActiveSortPopup(false);
               }}
-              className={`block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors cursor-pointer ${currentSort?.name === item.name ? 'bg-slate-900 hover:bg-slate-900 text-white' : ''}`}>
+              className={`block px-4 py-2 text-sm text-gray-700 dark:text-neutral-200 hover:bg-gray-100 dark:hover:bg-neutral-800 transition-colors cursor-pointer ${currentSort?.name === item.name ? 'bg-slate-900 hover:bg-slate-900 text-white' : ''}`}>
               {item.name}
             </div>
           ))}

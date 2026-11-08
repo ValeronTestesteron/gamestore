@@ -1,47 +1,27 @@
 import { Link } from 'react-router-dom';
 
-import EmblaCatousel from './ui/EmblaCarousel';
-
-import type { ShortScreenshots } from '../interfaces';
-
 type GameListProps = {
   id: number;
-  slug: string;
-  name: string;
-  released?: string;
-  background_image?: string;
-  metacritic?: number;
-  short_screenshots?: ShortScreenshots[];
+  title: string;
+  thumbnail: string;
+  release_date: string;
+  genre: string;
 };
 
-function GamesList({
-  id,
-  slug,
-  name,
-  background_image,
-  metacritic,
-  released,
-  short_screenshots,
-}: GameListProps) {
+function GamesList({ id, title, thumbnail, release_date, genre }: GameListProps) {
   return (
-    <div key={id} className="bg-white rounded-xl border border-gray-200">
+    <div className="bg-white rounded-xl border border-gray-200 dark:bg-[#1e1f21] dark:border-neutral-700">
       <div className="relative h-52 w-full overflow-hidden rounded-xl bg-slate-500">
-        {short_screenshots ? (
-          <EmblaCatousel slides={short_screenshots} />
-        ) : (
-          <img src={background_image} alt={name} className="h-full w-full object-cover" />
-        )}
+        <img src={thumbnail} alt={title} className="h-full w-full object-cover" />
 
-        {metacritic && (
-          <div className="metascore absolute flex items-center justify-center top-2 right-3 w-9 h-9 rounded-3xl font-semibold bg-green-500 text-white z-1">
-            {metacritic}
-          </div>
-        )}
+        <div className="absolute flex items-center justify-center top-2 right-3 px-2 py-1 rounded-md text-xs font-semibold bg-slate-900/80 text-white z-1">
+          {genre}
+        </div>
       </div>
-      <Link to={`/games/${slug}`}>
+      <Link to={`/games/${id}`}>
         <div className="p-5">
-          <h3 className="text-slate-700 line-clamp-2 text-xl font-bold">{name}</h3>
-          <div className="my-3 h-px bg-slate-700"></div>
+          <h3 className="text-slate-700 line-clamp-2 text-xl font-bold dark:text-white">{title}</h3>
+          <div className="my-3 h-px bg-slate-700 dark:bg-neutral-700"></div>
 
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-1.5 text-sm text-slate-400">
@@ -59,7 +39,7 @@ function GamesList({
                 />
               </svg>
               <span>
-                Релиз: <span className="font-medium text-slate-300">{released}</span>
+                Релиз: <span className="font-medium text-slate-300">{release_date}</span>
               </span>
             </div>
           </div>

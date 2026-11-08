@@ -9,8 +9,8 @@ type ComboboxProps = {
 
 function Combobox({ gameItems, onClearSearch }: ComboboxProps) {
   return (
-    <div className="absolute top-[56px] z-50 w-full bg-white rounded-md max-h-80 overflow-y-auto">
-      <div className="px-3 py-2 text-sm  text-slate-400">
+    <div className="absolute top-[56px] z-50 w-full bg-white rounded-md max-h-80 overflow-y-auto dark:bg-[#1e1f21]">
+      <div className="px-3 py-2 text-sm text-slate-400 dark:text-neutral-300">
         Результаты поиска: {gameItems?.length}
       </div>
 
@@ -19,10 +19,10 @@ function Combobox({ gameItems, onClearSearch }: ComboboxProps) {
           {gameItems.map((game) => (
             <ComboboxItem
               key={game.id}
-              name={game.name}
-              image={game.background_image}
-              genres={game.genres}
-              slug={game.slug}
+              id={game.id}
+              title={game.title}
+              thumbnail={game.thumbnail}
+              genre={game.genre}
               onClearSearch={onClearSearch}
             />
           ))}

@@ -1,10 +1,10 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
-import type { Genres, SortItem } from '../../interfaces';
+import type { Category, SortItem } from '../../interfaces';
 
 interface filterSliceState {
-  categoryId: number;
-  genres: Genres[];
+  category: string;
+  categories: Category[];
   currentSort: SortItem | null;
   sortOptions: SortItem[];
   currentPage: number;
@@ -12,23 +12,27 @@ interface filterSliceState {
 }
 
 const initialState: filterSliceState = {
-  categoryId: 0,
-  genres: [
-    { id: 4, name: 'Action', slug: 'action' },
-    { id: 51, name: 'Indie', slug: 'indie' },
-    { id: 3, name: 'Adventure', slug: 'adventure' },
-    { id: 5, name: 'RPG', slug: 'role-playing-games-rpg' },
-    { id: 10, name: 'Strategy', slug: 'strategy' },
-    { id: 2, name: 'Shooter', slug: 'shooter' },
-    { id: 59, name: 'Massively Multiplayer', slug: 'massively-multiplayer' },
-    { id: 15, name: 'Sport', slug: 'sport' },
+  category: '',
+  categories: [
+    { name: 'Все', slug: '' },
+    { name: 'Action', slug: 'action' },
+    { name: 'Shooter', slug: 'shooter' },
+    { name: 'MMORPG', slug: 'mmorpg' },
+    { name: 'Strategy', slug: 'strategy' },
+    { name: 'Sports', slug: 'sports' },
+    { name: 'Racing', slug: 'racing' },
+    { name: 'Battle Royale', slug: 'battle-royale' },
+    { name: 'Fantasy', slug: 'fantasy' },
+    { name: 'Sci-Fi', slug: 'sci-fi' },
+    { name: 'Fighting', slug: 'fighting' },
+    { name: 'Horror', slug: 'horror' },
   ],
   currentSort: null,
   sortOptions: [
-    { name: 'Названию', sorting: 'name' },
-    { name: 'Дате выхода', sorting: 'released' },
-    { name: 'Популярности', sorting: 'added' },
-    { name: 'Рейтингу', sorting: 'rating' },
+    { name: 'Названию', sorting: 'alphabetical' },
+    { name: 'Дате выхода', sorting: 'release-date' },
+    { name: 'Популярности', sorting: 'popularity' },
+    { name: 'Релевантности', sorting: 'relevance' },
   ],
   currentPage: 1,
   debounceQuery: '',
@@ -38,8 +42,8 @@ const filterSlice = createSlice({
   name: 'filterSlice',
   initialState,
   reducers: {
-    setCategoryId(state, action: PayloadAction<number>) {
-      state.categoryId = action.payload;
+    setCategory(state, action: PayloadAction<string>) {
+      state.category = action.payload;
       state.currentPage = 1;
     },
     setCurrentSort(state, action: PayloadAction<SortItem>) {
@@ -54,7 +58,7 @@ const filterSlice = createSlice({
   },
 });
 
-export const { setCategoryId, setCurrentSort, setCurrentPage, setDebounceQuery } =
+export const { setCategory, setCurrentSort, setCurrentPage, setDebounceQuery } =
   filterSlice.actions;
 
 export default filterSlice.reducer;

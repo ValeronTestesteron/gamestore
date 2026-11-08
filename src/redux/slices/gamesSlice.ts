@@ -2,26 +2,27 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 import axios from 'axios';
 
-import type { GameResponse } from '../../interfaces';
+import type { GameItem, GameResponse } from '../../interfaces';
 
-const API_KEY = import.meta.env.VITE_API_KEY;
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 interface FetchGamesArgs {
-  categoryUrl?: string;
+  category?: string;
   sortUrl?: string;
-  pageUrl?: string;
-  queryUrl?: string;
 }
 
 export const fetchGames = createAsyncThunk<GameResponse, FetchGamesArgs>(
   'gamesSlice/fetchGameByParams',
   async (params) => {
-    const { categoryUrl = '', sortUrl = '', pageUrl = '', queryUrl = '' } = params;
-    const { data } = await axios.get(
-      `${BASE_URL}/games?${queryUrl}${categoryUrl}${sortUrl}${pageUrl}page_size=12&key=${API_KEY}`,
-    );
-    return data;
+    const { category = '', sortUrl = '' } = params;
+    const { data } = await axios.get(`${BASE_URL}/api/games`, {
+      params: {
+        ...(category ? { category } : {}),
+        ...(sortUrl ? { 'sort-by': sortUrl } : {}),
+      },
+    });
+    // FreeToGame возвращает массив без пагинации — оборачиваем в привычную форму
+    return { count: data.length, results: data as GameItem[] };
   },
 );
 
@@ -31,7 +32,7 @@ interface GameSliceState {
 }
 
 const initialState: GameSliceState = {
-  games: { count: 0, next: null, previous: null, results: [] },
+  games: { count: 0, results: [] },
   status: 'loading',
 };
 

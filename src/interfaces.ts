@@ -1,31 +1,27 @@
 export interface GameResponse {
   count: number;
-  next: string | null;
-  previous: string | null;
   results: GameItem[];
 }
 
 export interface GameItem {
   id: number;
-  slug: string;
-  name: string;
-  description_raw?: string;
-  released?: string;
-  background_image?: string;
-  background_image_additional?: string;
-  metacritic?: number;
-  short_screenshots?: ShortScreenshots[];
-  genres?: Genres[];
-  tags?: Tag[];
-  platforms?: PlatformItem[];
-  developers?: Developer[];
-  publishers?: Publisher[];
+  title: string;
+  thumbnail: string;
+  short_description: string;
+  game_url: string;
+  genre: string;
+  platform: string;
+  publisher?: string;
+  developer?: string;
+  release_date: string;
+  freetogame_profile_url: string;
 }
 
-export interface Genres {
-  id: number;
-  name: string;
-  slug: string;
+export interface GameDetail extends GameItem {
+  description: string;
+  status: string;
+  screenshots?: ShortScreenshots[];
+  minimum_system_requirements?: SystemRequirements;
 }
 
 export interface ShortScreenshots {
@@ -33,35 +29,20 @@ export interface ShortScreenshots {
   image: string;
 }
 
-export interface Tag {
-  id: number;
-  name: string;
-  slug: string;
+export interface SystemRequirements {
+  os?: string;
+  processor?: string;
+  memory?: string;
+  graphics?: string;
+  storage?: string;
 }
 
-export interface Platform {
-  id: number;
-  name: string;
-  slug: string;
-}
-
-export interface PlatformItem {
-  platform: Platform;
-}
-
-export interface Developer {
-  id: number;
-  name: string;
-  slug: string;
-}
-
-export interface Publisher {
-  id: number;
+export interface Category {
   name: string;
   slug: string;
 }
 
 export interface SortItem {
   name: string;
-  sorting: 'name' | 'released' | 'added' | 'rating';
+  sorting: 'alphabetical' | 'release-date' | 'popularity' | 'relevance';
 }

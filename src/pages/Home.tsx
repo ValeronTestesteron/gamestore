@@ -9,22 +9,24 @@ import GameSortDropdown from '../components/GameSortDropdown';
 import Skeleton from '../components/Skeleton';
 import Pagination from '../components/Pagination';
 
+const PAGE_SIZE = 12;
+
 function Home() {
   const games = useAppSelector((state) => state.gamesSlice.games);
   const status = useAppSelector((state) => state.gamesSlice.status);
-  const categoryId = useAppSelector((state) => state.filterSlice.categoryId);
+  const category = useAppSelector((state) => state.filterSlice.category);
   const currentSort = useAppSelector((state) => state.filterSlice.currentSort);
   const currentPage = useAppSelector((state) => state.filterSlice.currentPage);
 
   const dispatch = useAppDispatch();
 
-  const categoryUrl = `${categoryId ? `genres=${categoryId}&` : ''}`;
-  const sortUrl = `${currentSort ? `ordering=${currentSort.sorting}&` : ''}`;
-  const pageUrl = `${currentPage !== 1 ? `page=${currentPage}&` : ''}`;
-
   useEffect(() => {
-    dispatch(fetchGames({ categoryUrl, sortUrl, pageUrl }));
-  }, [categoryId, currentSort, currentPage]);
+    dispatch(fetchGames({ category, sortUrl: currentSort?.sorting }));
+  }, [category, currentSort?.sorting]);
+
+  const totalPages = Math.ceil(games.count / PAGE_SIZE);
+
+  const pagedGames = games.results.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
 
   const skeletons = [...new Array(8)].map((_, index) => <Skeleton key={index} />);
 
@@ -51,9 +53,11 @@ function Home() {
             skeletons
           ) : (
             <>
-              {games.results && games.results.map((item) => <GamesList key={item.id} {...item} />)}
+              {pagedGames.map((item) => (
+                <GamesList key={item.id} {...item} />
+              ))}
 
-              <Pagination next={games.next} prev={games.previous} pagesCounts={games.count} />
+              <Pagination totalPages={totalPages} />
             </>
           )}
         </div>

@@ -35,11 +35,11 @@ function Search({ className, placeholder }: SearchType) {
       return;
     }
 
-    const queryUrl: string = `${query ? `search=${query}&` : ''}`;
-
-    dispatch(fetchGames({ queryUrl }))
+    dispatch(fetchGames({}))
       .unwrap()
-      .then((data) => setSearchGames(data.results));
+      .then((data) => {
+        setSearchGames(data.results.filter((game) => game.title.toLowerCase().includes(query)));
+      });
   }, [debounceQuery]);
 
   function onClearSearch() {
@@ -51,7 +51,7 @@ function Search({ className, placeholder }: SearchType) {
     <div className={`search relative flex items-center gap-4 ${className}`}>
       <input
         name="search"
-        className="w-full p-3 pl-12 bg-gray-200 rounded-md focus:outline-none"
+        className="w-full p-3 pl-12 bg-gray-200 dark:bg-[#1e1f21] dark:text-white rounded-md focus:outline-none"
         placeholder={placeholder}
         type="text"
         value={searchQuery}
