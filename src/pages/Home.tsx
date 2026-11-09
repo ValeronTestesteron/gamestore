@@ -1,6 +1,5 @@
-import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../redux/store';
-import { fetchGames } from '../redux/slices/gamesSlice';
+import { useGetGamesQuery } from '../redux/api/gameApi';
 
 import VideoBanner from '../components/VideoBanner';
 import Genres from '../components/Genres';
@@ -8,27 +7,23 @@ import GamesList from '../components/GamesList';
 import GameSortDropdown from '../components/GameSortDropdown';
 import Skeleton from '../components/Skeleton';
 import Pagination from '../components/Pagination';
+import type { FetchBaseQueryError } from '@reduxjs/toolkit/query/react';
 
 const PAGE_SIZE = 12;
 
 function Home() {
-  const games = useAppSelector((state) => state.gamesSlice.games);
-  const status = useAppSelector((state) => state.gamesSlice.status);
-  const category = useAppSelector((state) => state.filterSlice.category);
-  const currentSort = useAppSelector((state) => state.filterSlice.currentSort);
+  const { data, isLoading, error } = useGetGamesQuery();
   const currentPage = useAppSelector((state) => state.filterSlice.currentPage);
 
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    dispatch(fetchGames({ category, sortUrl: currentSort?.sorting }));
-  }, [category, currentSort?.sorting]);
+  const totalPages = Math.ceil(data.length / PAGE_SIZE);
 
-  const totalPages = Math.ceil(games.count / PAGE_SIZE);
-
-  const pagedGames = games.results.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
+  const pagedGames = data.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
 
   const skeletons = [...new Array(8)].map((_, index) => <Skeleton key={index} />);
+
+  console.log(data, totalPages);
 
   return (
     <>
@@ -44,18 +39,16 @@ function Home() {
           <GameSortDropdown />
         </div>
 
-        {status === 'error' && (
-          <div className="mt-5 text-xl font-bold">Возникла ошибка: загрузки</div>
+        {error && (
+          <div className="mt-5 text-xl font-bold">{(error as FetchBaseQueryError).status}</div>
         )}
 
         <div className="grid grid-cols-4 gap-4">
-          {status === 'loading' ? (
+          {isLoading ? (
             skeletons
           ) : (
             <>
-              {pagedGames.map((item) => (
-                <GamesList key={item.id} {...item} />
-              ))}
+              {pagedGames && pagedGames.map((item) => <GamesList key={item.id} {...item} />)}
 
               <Pagination totalPages={totalPages} />
             </>

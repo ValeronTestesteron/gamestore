@@ -1,8 +1,3 @@
-export interface GameResponse {
-  count: number;
-  results: GameItem[];
-}
-
 export interface GameItem {
   id: number;
   title: string;

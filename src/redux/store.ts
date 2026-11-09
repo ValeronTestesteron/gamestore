@@ -1,12 +1,18 @@
 import { configureStore } from '@reduxjs/toolkit';
-import filterSlice from './slices/filterSlice';
-import gamesSlice from './slices/gamesSlice';
+import { setupListeners } from '@reduxjs/toolkit/query';
 
 import { useDispatch, useSelector, type TypedUseSelectorHook } from 'react-redux';
 
+import { gameApi } from './api/gameApi';
+import filterSlice from './slices/filterSlice';
+import themeSlice from './slices/themeSlice';
+
 export const store = configureStore({
-  reducer: { filterSlice, gamesSlice },
+  reducer: { filterSlice, themeSlice, [gameApi.reducerPath]: gameApi.reducer },
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(gameApi.middleware),
 });
+
+setupListeners(store.dispatch);
 
 export type RootType = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;

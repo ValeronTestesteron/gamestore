@@ -1,12 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../redux/store';
 
+import { useGetGamesQuery } from '../../../redux/api/gameApi';
 import { setDebounceQuery } from '../../../redux/slices/filterSlice';
-import { fetchGames } from '../../../redux/slices/gamesSlice';
 
 import Combobox from '../Combobox/Combobox';
-
-import type { GameItem } from '../../../interfaces';
 
 type SearchType = {
   className: string;
@@ -14,9 +12,10 @@ type SearchType = {
 };
 
 function Search({ className, placeholder }: SearchType) {
-  const [searchGames, setSearchGames] = useState<GameItem[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const debounceQuery = useAppSelector((state) => state.filterSlice.debounceQuery);
+  const { data = [] } = useGetGamesQuery();
+
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -27,24 +26,18 @@ function Search({ className, placeholder }: SearchType) {
     return () => clearTimeout(timer);
   }, [searchQuery]);
 
-  useEffect(() => {
+  const filterGames = useMemo(() => {
     const query = debounceQuery.trim().toLowerCase();
 
     if (!query) {
-      setSearchGames([]);
-      return;
+      return [];
     }
 
-    dispatch(fetchGames({}))
-      .unwrap()
-      .then((data) => {
-        setSearchGames(data.results.filter((game) => game.title.toLowerCase().includes(query)));
-      });
-  }, [debounceQuery]);
+    return data.filter((game) => game.title.toLowerCase().includes(query));
+  }, [data, debounceQuery]);
 
   function onClearSearch() {
     setSearchQuery('');
-    dispatch(setDebounceQuery(''));
   }
 
   return (
@@ -84,7 +77,7 @@ function Search({ className, placeholder }: SearchType) {
               d="M10 8.586L2.929 1.515 1.515 2.929 8.586 10l-7.071 7.071 1.414 1.414L10 11.414l7.071 7.071 1.414-1.414L11.414 10l7.071-7.071-1.414-1.414L10 8.586z"></path>
           </svg>
 
-          <Combobox gameItems={searchGames} onClearSearch={onClearSearch} />
+          <Combobox gameItems={filterGames} onClearSearch={onClearSearch} />
         </>
       )}
     </div>
