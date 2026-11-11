@@ -18,7 +18,7 @@ function GamesList({ id, title, thumbnail, release_date, genre }: GameListProps)
           {genre}
         </div>
       </div>
-      <Link to={`/games/${id}`}>
+      <Link to={`/game/${id}`}>
         <div className="p-5">
           <h3 className="text-slate-700 line-clamp-2 text-xl font-bold dark:text-white">{title}</h3>
           <div className="my-3 h-px bg-slate-700 dark:bg-neutral-700"></div>

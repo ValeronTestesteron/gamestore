@@ -1,5 +1,6 @@
+import { useState } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
-import { useEffect, useCallback, useState } from 'react';
+import ImagePopup from '../../popup/ImagePopup';
 
 import type { ShortScreenshots } from '../../../interfaces';
 
@@ -8,52 +9,32 @@ type EmblaCatouselProps = {
 };
 
 function EmblaCatousel({ slides }: EmblaCatouselProps) {
-  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
-  const [selectedIndex, setSelectedIndex] = useState<number>(0);
-  const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
-
-  const scrollTo = useCallback(
-    (index: number) => {
-      if (emblaApi) emblaApi.scrollTo(index);
-    },
-    [emblaApi],
-  );
-
-  const onSelect = useCallback((api: any) => {
-    setSelectedIndex(api.selectedScrollSnap());
-  }, []);
-
-  useEffect(() => {
-    if (!emblaApi) return;
-
-    setScrollSnaps(emblaApi.scrollSnapList());
-
-    emblaApi.on('init', onSelect);
-    emblaApi.on('select', onSelect);
-  }, [emblaApi, onSelect]);
+  const [emblaRef] = useEmblaCarousel({ slidesToScroll: 2 });
+  const [popupImage, setPopupImage] = useState<string | null>(null);
 
   return (
-    <div className="embla">
-      <div className="embla__viewport" ref={emblaRef}>
-        <div className="embla__container">
-          {slides.map((slide, idx) => (
-            <div key={idx} className="embla__slide">
-              <img src={slide.image} alt="" className="h-full object-cover" />
-            </div>
-          ))}
+    <>
+      <div className="embla">
+        <div className="embla__viewport overflow-hidden" ref={emblaRef}>
+          <div className="embla__container flex gap-4">
+            {slides.map((slide) => (
+              <div
+                key={slide.id}
+                onClick={() => setPopupImage(slide.image)}
+                className="embla__slide flex-[0_0_49%] min-w-0 rounded-xl overflow-hidden cursor-pointer">
+                <img
+                  src={slide.image}
+                  alt=""
+                  className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
+                />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
-      <div className="embla__dots absolute bottom-4 w-full flex justify-center gap-2">
-        {scrollSnaps.map((_, index) => (
-          <button
-            key={index}
-            onClick={() => scrollTo(index)}
-            className={`embla__dot cursor-pointer ${index === selectedIndex ? 'is-active' : ''}`}
-          />
-        ))}
-      </div>
-    </div>
+      {popupImage && <ImagePopup image={popupImage} onClear={() => setPopupImage(null)} />}
+    </>
   );
 }
 

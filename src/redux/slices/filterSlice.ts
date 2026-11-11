@@ -8,6 +8,7 @@ interface filterSliceState {
   currentSort: SortItem | null;
   sortOptions: SortItem[];
   currentPage: number;
+  gamePerPage: number;
   debounceQuery: string;
 }
 
@@ -35,6 +36,7 @@ const initialState: filterSliceState = {
     { name: 'Релевантности', sorting: 'relevance' },
   ],
   currentPage: 1,
+  gamePerPage: 12,
   debounceQuery: '',
 };
 

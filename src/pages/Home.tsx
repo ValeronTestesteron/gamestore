@@ -1,4 +1,4 @@
-import { useAppDispatch, useAppSelector } from '../redux/store';
+import { useAppSelector } from '../redux/store';
 import { useGetGamesQuery } from '../redux/api/gameApi';
 
 import VideoBanner from '../components/VideoBanner';
@@ -9,21 +9,17 @@ import Skeleton from '../components/Skeleton';
 import Pagination from '../components/Pagination';
 import type { FetchBaseQueryError } from '@reduxjs/toolkit/query/react';
 
-const PAGE_SIZE = 12;
-
 function Home() {
-  const { data, isLoading, error } = useGetGamesQuery();
+  const category = useAppSelector((state) => state.filterSlice.category);
+  const sort = useAppSelector((state) => state.filterSlice.currentSort?.sorting);
+  const { data = [], isLoading, error } = useGetGamesQuery({ category, sort });
   const currentPage = useAppSelector((state) => state.filterSlice.currentPage);
+  const gamePerPage = useAppSelector((state) => state.filterSlice.gamePerPage);
 
-  const dispatch = useAppDispatch();
-
-  const totalPages = Math.ceil(data.length / PAGE_SIZE);
-
-  const pagedGames = data.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
+  const totalPages = Math.ceil(data.length / gamePerPage);
+  const pagedGames = data.slice((currentPage - 1) * gamePerPage, currentPage * gamePerPage);
 
   const skeletons = [...new Array(8)].map((_, index) => <Skeleton key={index} />);
-
-  console.log(data, totalPages);
 
   return (
     <>

@@ -11,7 +11,7 @@ type ComboboxItemProps = {
 function ComboboxItem({ id, title, thumbnail, genre, onClearSearch }: ComboboxItemProps) {
   return (
     <Link
-      to={`games/${id}`}
+      to={`game/${id}`}
       onClick={() => onClearSearch()}
       className="flex items-center gap-3 p-2 rounded-md hover:bg-slate-100 dark:hover:bg-neutral-700 transition-colors group">
       <div className="w-10 h-14 bg-slate-200 rounded overflow-hidden flex-shrink-0">

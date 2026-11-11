@@ -14,7 +14,7 @@ type SearchType = {
 function Search({ className, placeholder }: SearchType) {
   const [searchQuery, setSearchQuery] = useState('');
   const debounceQuery = useAppSelector((state) => state.filterSlice.debounceQuery);
-  const { data = [] } = useGetGamesQuery();
+  const { data = [] } = useGetGamesQuery({});
 
   const dispatch = useAppDispatch();
 

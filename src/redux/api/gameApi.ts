@@ -7,11 +7,17 @@ export const gameApi = createApi({
   reducerPath: 'gameApi',
   baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
   endpoints: (build) => ({
-    getGames: build.query<GameItem[], void | string>({
-      query: () => '/games',
+    getGames: build.query<GameItem[], { category?: string; sort?: string }, void>({
+      query: (params) => ({
+        url: '/games',
+        params: {
+          category: params?.category || undefined,
+          'sort-by': params?.sort,
+        },
+      }),
     }),
     getGameById: build.query<GameDetail, string>({
-      query: (id) => `/game?id=${id}`,
+      query: (id) => ({ url: '/game', params: { id } }),
     }),
   }),
 });
