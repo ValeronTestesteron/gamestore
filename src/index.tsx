@@ -10,7 +10,7 @@ import './index.css';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename="/gamestore">
       <Provider store={store}>
         <App />
       </Provider>
