@@ -2,12 +2,10 @@ import { useAppDispatch, useAppSelector } from '../redux/store';
 import { setCurrentPage } from '../redux/slices/filterSlice';
 
 type PaginationProps = {
-  next: string | null;
-  prev: string | null;
-  pagesCounts: number;
+  totalPages: number;
 };
 
-function Pagination({ next, prev, pagesCounts }: PaginationProps) {
+function Pagination({ totalPages }: PaginationProps) {
   const dispatch = useAppDispatch();
   const currentPage = useAppSelector((state) => state.filterSlice.currentPage);
 
@@ -15,7 +13,7 @@ function Pagination({ next, prev, pagesCounts }: PaginationProps) {
     const delta = 2;
     const range = [];
 
-    for (let i = 1; i <= pagesCounts; i++) {
+    for (let i = 1; i <= totalPages; i++) {
       if (i >= currentPage - delta && i <= currentPage + delta) range.push(i);
     }
     return range;
@@ -24,10 +22,10 @@ function Pagination({ next, prev, pagesCounts }: PaginationProps) {
   const paginationRange = splitPages();
 
   function onNextPage() {
-    if (next) dispatch(setCurrentPage(currentPage + 1));
+    if (currentPage < totalPages) dispatch(setCurrentPage(currentPage + 1));
   }
   function onPrevPage() {
-    if (prev) dispatch(setCurrentPage(currentPage - 1));
+    if (currentPage > 1) dispatch(setCurrentPage(currentPage - 1));
   }
 
   if (paginationRange.length <= 0) return;
@@ -37,7 +35,7 @@ function Pagination({ next, prev, pagesCounts }: PaginationProps) {
       <button
         className="flex items-center justify-center h-9 w-9 rounded-3xl bg-slate-800 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
         onClick={() => onPrevPage()}
-        disabled={prev === null}>
+        disabled={currentPage === 1}>
         <svg viewBox="0 0 20 20" width="25" height="25" fill="#fff" aria-hidden="true">
           <path
             fillRule="evenodd"
@@ -57,7 +55,7 @@ function Pagination({ next, prev, pagesCounts }: PaginationProps) {
       <button
         className="flex items-center justify-center h-9 w-9 rounded-3xl bg-slate-800 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
         onClick={() => onNextPage()}
-        disabled={next === null}>
+        disabled={currentPage === totalPages}>
         <svg viewBox="0 0 20 20" width="25" height="25" fill="#fff" aria-hidden="true">
           <path
             fillRule="evenodd"
