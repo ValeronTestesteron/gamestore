@@ -6,9 +6,10 @@ import { useDispatch, useSelector, type TypedUseSelectorHook } from 'react-redux
 import { gameApi } from './api/gameApi';
 import filterSlice from './slices/filterSlice';
 import themeSlice from './slices/themeSlice';
+import wishSlice from './slices/wishSlice';
 
 export const store = configureStore({
-  reducer: { filterSlice, themeSlice, [gameApi.reducerPath]: gameApi.reducer },
+  reducer: { filterSlice, themeSlice, wishSlice, [gameApi.reducerPath]: gameApi.reducer },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(gameApi.middleware),
 });
 

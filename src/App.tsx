@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 
 import Home from './pages/Home';
 import Game from './pages/Game';
+import Wishlist from './pages/Wishlist';
 import Header from './components/Header';
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/game/:id" element={<Game />} />
+        <Route path="/wishlist" element={<Wishlist />} />
       </Routes>
     </div>
   );

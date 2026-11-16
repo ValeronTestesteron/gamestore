@@ -41,3 +41,10 @@ export interface SortItem {
   name: string;
   sorting: 'alphabetical' | 'release-date' | 'popularity' | 'relevance';
 }
+
+export interface Wishlist extends Omit<
+  GameItem,
+  'game_url' | 'publisher' | 'developer' | 'freetogame_profile_url' | 'short_description'
+> {
+  wishstatus?: 'played' | 'notplayed';
+}

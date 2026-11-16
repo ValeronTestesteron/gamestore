@@ -19,8 +19,10 @@ function Header() {
             <img src={logo} className="h-16" alt="" />
           </Link>
         </div>
-
-        <Search className="max-w-[400px] w-full ml-auto" placeholder="Найти игру" />
+        <nav className="text-black dark:text-white mr-6 ml-auto">
+          <Link to="/wishlist">Избранное</Link>
+        </nav>
+        <Search className="max-w-[400px] w-full" placeholder="Найти игру" />
         <div className="theme flex items-center ml-4">
           {theme === 'dark' ? (
             <svg
