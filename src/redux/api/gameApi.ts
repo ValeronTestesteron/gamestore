@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import type { GameDetail, GameItem } from '../../interfaces';
 
-const BASE_URL = import.meta.env.VITE_BASE_URL;
+const BASE_URL = import.meta.env.VITE_BASE_URL || 'https://corsproxy.io';;
 
 export const gameApi = createApi({
   reducerPath: 'gameApi',
