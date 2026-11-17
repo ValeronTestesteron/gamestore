@@ -2,6 +2,7 @@ import { useAppDispatch, useAppSelector } from '../redux/store';
 import { toggleTheme } from '../redux/slices/themeSlice';
 
 import Search from '../components/ui/Search';
+import Heart from './ui/icons/HeartIcon';
 
 import logo from '../assets/logo.png';
 
@@ -9,6 +10,7 @@ import { Link } from 'react-router-dom';
 
 function Header() {
   const theme = useAppSelector((state) => state.themeSlice.theme);
+  const wishlist = useAppSelector((state) => state.wishSlice.items);
   const dispatch = useAppDispatch();
 
   return (
@@ -20,7 +22,18 @@ function Header() {
           </Link>
         </div>
         <nav className="text-black dark:text-white mr-6 ml-auto">
-          <Link to="/wishlist">Избранное</Link>
+          <Link to="/wishlist">
+            <div className="relative">
+              <Heart
+                className={`${wishlist.length !== 0 ? 'text-red-700' : 'text-stone-700 dark:text-white'}`}
+              />
+              {wishlist.length !== 0 && (
+                <span className="flex items-center justify-center absolute -top-1 -right-1 w-3 h-3 text-white bg-stone-700 dark:text-stone-700 dark:bg-white rounded-full text-[9px] font-bold pl-[1px]">
+                  {wishlist.length}
+                </span>
+              )}
+            </div>
+          </Link>
         </nav>
         <Search className="max-w-[400px] w-full" placeholder="Найти игру" />
         <div className="theme flex items-center ml-4">

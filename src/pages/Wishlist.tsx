@@ -9,7 +9,6 @@ function Wishlist() {
   const wishlist = useAppSelector((state) => state.wishSlice.items);
   const notification = useAppSelector((state) => state.wishSlice.message);
   const dispatch = useAppDispatch();
-  console.log(notification);
 
   useEffect(() => {
     const timer = setTimeout(() => {
