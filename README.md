@@ -1,75 +1,45 @@
-# React + TypeScript + Vite
+# GameStore
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Каталог бесплатных игр с фильтрами, сортировкой, поиском и личным вишлистом.
+Данные — [FreeToGame API](https://www.freetogame.com/api-docs).
 
-Currently, two official plugins are available:
+**Демо:** https://valerontestesteron.github.io/gamestore
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+![Каталог игр](docs/screenshot1.png)
+![Вишлист и поиск](docs/screenshot2.png)
 
-## React Compiler
+## Стек
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+React 19 · TypeScript · Redux Toolkit + RTK Query · React Router 7 · Tailwind CSS 4 · Vite · Vitest + React Testing Library
 
-## Expanding the ESLint configuration
+## Возможности
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- Каталог игр через RTK Query: кэширование, дедупликация одинаковых запросов
+- Фильтрация по жанрам, сортировка (дата выхода / алфавит / популярность)
+- Поиск с дебаунсом
+- Страница игры: описание, скриншоты, системные требования
+- **Личный вишлист** — клиентская фича (у API нет такого эндпоинта):
+  добавление/удаление, отметка «сыграл / хочу сыграть», сохранение между сессиями в localStorage
+- Тёмная тема с сохранением выбора
+- Скелетоны загрузки, попапы через createPortal
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Запуск
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+git clone https://github.com/valerontestesteron/gamestore
+cd gamestore
+npm install
+npm run dev     # http://localhost:5173
+npm run test    # тесты
+npm run build   # прод-сборка
 ```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+## Деплой
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+GitHub Pages (project page). `base: '/gamestore/'` в `vite.config.ts`.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Планы
 
-```
+- Фильтры хранятся в URL (`?category=strategy`) — ссылкой можно поделиться
+- Страница 404, ленивая загрузка страниц (React.lazy + Suspense)
+- Тесты: Vitest + React Testing Library
