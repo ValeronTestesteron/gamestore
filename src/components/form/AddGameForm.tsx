@@ -48,7 +48,7 @@ function AddGameForm() {
     setOpenPromtPopup(false);
   };
 
-  const onSubmit: SubmitHandler<IForm> = (formData) => {
+  const onSubmit: SubmitHandler<IForm> = () => {
     const matchTitleGame =
       data && data.find((it) => it.title.toLowerCase().includes(title.trim().toLowerCase()));
 
@@ -69,9 +69,7 @@ function AddGameForm() {
     dispatch(addGame(wishitem));
     setSelectGame(null);
     reset();
-    console.log(formData);
   };
-  console.log(selectGame);
 
   return (
     <div className="max-w-sm w-full rounded-xl border border-stone-200 bg-white p-6 text-stone-700 shadow-xl transition-colors dark:border-stone-800 dark:bg-[#1e1f21] dark:text-white">
@@ -93,7 +91,7 @@ function AddGameForm() {
             {...register('title', {
               required: 'Укажите название',
               onChange: (e) => {
-                const value = (e.target.value as string).trim().toLowerCase();
+                const value = e.target.value.trim().toLowerCase();
                 const match = data?.find((g) => g.title.toLowerCase() === value) ?? null;
 
                 setSelectGame(match);

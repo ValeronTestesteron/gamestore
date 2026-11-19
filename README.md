@@ -9,9 +9,11 @@
 ![Вишлист и поиск](docs/screenshot2.png)
 
 ## Стек
-React 19 · TypeScript · Redux Toolkit + RTK Query · React Router 7 · Tailwind CSS 4 · Vite · Vitest + React Testing Library
+
+React 19 · TypeScript · Redux Toolkit + RTK Query · React Router 7 · React Hook Form 7 · Tailwind CSS 4 · Vite · Vitest + React Testing Library
 
 ## Возможности
+
 - Каталог игр через RTK Query: кэширование, дедупликация одинаковых запросов
 - Фильтрация по жанрам, сортировка (дата выхода, алфавит, популярность)
 - Поиск с дебаунсом (300 мс)
@@ -19,6 +21,8 @@ React 19 · TypeScript · Redux Toolkit + RTK Query · React Router 7 · Tailwin
 - **Личный вишлист** — клиентская фича (у API нет такого эндпоинта):
   добавление/удаление, отметка «сыграл / хочу сыграть»,
   сохранение между сессиями в localStorage
+- На странице /wishlist добавление своей игры в вишлист через форму (React Hook Form) с валидацией полей,
+  запись сохраняется в localStorage
 - Тёмная тема с сохранением выбора
 - Скелетоны загрузки, попапы через createPortal
 
@@ -34,9 +38,11 @@ npm run build   # прод-сборка
 ```
 
 ## Деплой
+
 GitHub Pages (project page). `base: '/gamestore/'` в `vite.config.ts`.
 
 ## Планы
+
 - Фильтры хранятся в URL (`?category=strategy`) — ссылкой можно поделиться
 - Страница 404, ленивая загрузка страниц (React.lazy + Suspense)
 - Тесты: Vitest + React Testing Library
