@@ -5,7 +5,7 @@ type CloseIconProps = {
 function CloseIcon({ className }: CloseIconProps) {
   return (
     <svg
-      className="w-5 h-5 cursor-pointer text-stone-700 dark:text-white"
+      className={`w-5 h-5 cursor-pointer text-stone-700 dark:text-white ${className}`}
       viewBox="0 0 20 20"
       xmlns="http://www.w3.org/2000/svg">
       <path
