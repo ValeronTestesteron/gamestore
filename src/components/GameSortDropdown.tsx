@@ -1,12 +1,16 @@
 import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../redux/store';
-import { setCurrentSort } from '../redux/slices/filterSlice';
+import { useSearchParams } from 'react-router-dom';
+import { setCurrentPage } from '../redux/slices/filterSlice';
 
 function GameSortDropdown() {
-  const [activeSortPopup, setActiveSortPopup] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const sort = searchParams.get('sort-by') ?? undefined;
   const sortOptions = useAppSelector((state) => state.filterSlice.sortOptions);
-  const currentSort = useAppSelector((state) => state.filterSlice.currentSort);
   const dispatch = useAppDispatch();
+
+  const [activeSortPopup, setActiveSortPopup] = useState(false);
 
   return (
     <div className="relative inline-block text-left">
@@ -34,10 +38,14 @@ function GameSortDropdown() {
             <div
               key={index}
               onClick={() => {
-                dispatch(setCurrentSort({ ...item }));
+                setSearchParams((prev) => {
+                  prev.set('sort-by', item.sorting);
+                  return prev;
+                });
+                dispatch(setCurrentPage(1));
                 setActiveSortPopup(false);
               }}
-              className={`block px-4 py-2 text-sm text-gray-700 dark:text-neutral-200 hover:bg-gray-100 dark:hover:bg-neutral-800 transition-colors cursor-pointer ${currentSort?.name === item.name ? 'bg-slate-900 hover:bg-slate-900 text-white' : ''}`}>
+              className={`block px-4 py-2 text-sm text-gray-700 dark:text-neutral-200 hover:bg-gray-100 dark:hover:bg-neutral-800 transition-colors cursor-pointer ${sort === item.sorting ? 'bg-slate-900 hover:bg-slate-900 text-white' : ''}`}>
               {item.name}
             </div>
           ))}

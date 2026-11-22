@@ -3,9 +3,7 @@ import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import type { Category, SortItem } from '../../interfaces';
 
 interface filterSliceState {
-  category: string;
   categories: Category[];
-  currentSort: SortItem | null;
   sortOptions: SortItem[];
   currentPage: number;
   gamePerPage: number;
@@ -13,7 +11,6 @@ interface filterSliceState {
 }
 
 const initialState: filterSliceState = {
-  category: '',
   categories: [
     { name: 'Все', slug: '' },
     { name: 'Action', slug: 'action' },
@@ -28,7 +25,6 @@ const initialState: filterSliceState = {
     { name: 'Fighting', slug: 'fighting' },
     { name: 'Horror', slug: 'horror' },
   ],
-  currentSort: null,
   sortOptions: [
     { name: 'Названию', sorting: 'alphabetical' },
     { name: 'Дате выхода', sorting: 'release-date' },
@@ -44,13 +40,6 @@ const filterSlice = createSlice({
   name: 'filterSlice',
   initialState,
   reducers: {
-    setCategory(state, action: PayloadAction<string>) {
-      state.category = action.payload;
-      state.currentPage = 1;
-    },
-    setCurrentSort(state, action: PayloadAction<SortItem>) {
-      state.currentSort = action.payload;
-    },
     setCurrentPage(state, action: PayloadAction<number>) {
       state.currentPage = action.payload;
     },
@@ -60,7 +49,6 @@ const filterSlice = createSlice({
   },
 });
 
-export const { setCategory, setCurrentSort, setCurrentPage, setDebounceQuery } =
-  filterSlice.actions;
+export const { setCurrentPage, setDebounceQuery } = filterSlice.actions;
 
 export default filterSlice.reducer;

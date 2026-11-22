@@ -1,5 +1,7 @@
-import { useAppSelector } from '../redux/store';
+import { useAppDispatch, useAppSelector } from '../redux/store';
 import { useGetGamesQuery } from '../redux/api/gameApi';
+import { useSearchParams } from 'react-router-dom';
+import { setCurrentPage } from '../redux/slices/filterSlice';
 
 import VideoBanner from '../components/VideoBanner';
 import Genres from '../components/Genres';
@@ -7,14 +9,20 @@ import GamesList from '../components/GamesList';
 import GameSortDropdown from '../components/GameSortDropdown';
 import Skeleton from '../components/Skeleton';
 import Pagination from '../components/Pagination';
+import CloseIcon from '../components/ui/icons/CloseIcon';
+
 import type { FetchBaseQueryError } from '@reduxjs/toolkit/query/react';
 
 function Home() {
-  const category = useAppSelector((state) => state.filterSlice.category);
-  const sort = useAppSelector((state) => state.filterSlice.currentSort?.sorting);
-  const { data = [], isLoading, error } = useGetGamesQuery({ category, sort });
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const category = searchParams.get('category') ?? '';
+  const sort = searchParams.get('sort-by') ?? undefined;
   const currentPage = useAppSelector((state) => state.filterSlice.currentPage);
   const gamePerPage = useAppSelector((state) => state.filterSlice.gamePerPage);
+  const dispatch = useAppDispatch();
+
+  const { data = [], isLoading, error } = useGetGamesQuery({ category, sort });
 
   const totalPages = Math.ceil(data.length / gamePerPage);
   const pagedGames = data.slice((currentPage - 1) * gamePerPage, currentPage * gamePerPage);
@@ -27,7 +35,20 @@ function Home() {
 
       <div className="container w-full mx-auto">
         <div className="mt-15 mb-12">
-          <h1 className="text-5xl font-bold">Игры</h1>
+          <h1 className="flex justify-between items-center text-5xl font-bold">
+            Игры
+            {searchParams.size > 0 && (
+              <button
+                className="p-2 rounded-full border border-white cursor-pointer"
+                title="Сбросить фильтры"
+                onClick={() => {
+                  setSearchParams();
+                  dispatch(setCurrentPage(1));
+                }}>
+                <CloseIcon />
+              </button>
+            )}
+          </h1>
         </div>
 
         <div className="flex justify-between">

@@ -6,6 +6,7 @@ import Home from './pages/Home';
 import Game from './pages/Game';
 import Wishlist from './pages/Wishlist';
 import Header from './components/Header';
+import NotFoundPage from './pages/NotFoundPage';
 
 function App() {
   const themeColor = useAppSelector((state) => state.themeSlice.theme);
@@ -23,6 +24,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/game/:id" element={<Game />} />
         <Route path="/wishlist" element={<Wishlist />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </div>
   );

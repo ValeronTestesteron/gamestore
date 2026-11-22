@@ -12,7 +12,7 @@ export const gameApi = createApi({
         url: '/games',
         params: {
           category: params?.category || undefined,
-          'sort-by': params?.sort,
+          'sort-by': params?.sort || undefined,
         },
       }),
     }),
