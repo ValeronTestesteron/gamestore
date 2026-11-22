@@ -9,7 +9,14 @@ import GameInfo from '../components/gamePage/GameInfo';
 
 function Game() {
   const { id } = useParams();
-  const { data } = useGetGameByIdQuery(String(id));
+  const { data, error } = useGetGameByIdQuery(String(id));
+
+  if (error)
+    return (
+      <div className="container mx-auto mt-20 text-3xl font-bold">
+        Такой игры нет {(error as { data?: { status_message?: string } })?.data?.status_message}
+      </div>
+    );
 
   return (
     <>
