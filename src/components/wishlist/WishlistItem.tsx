@@ -2,6 +2,7 @@ import { useAppDispatch } from '../../redux/store';
 import { removeGame, setWishStatus } from '../../redux/slices/wishSlice';
 
 import type { Wishlist } from '../../interfaces';
+import { Link } from 'react-router-dom';
 
 type WishlistItemProps = {
   item: Wishlist;
@@ -11,16 +12,18 @@ function WishlistItem({ item }: WishlistItemProps) {
   const dispatch = useAppDispatch();
 
   return (
-    <div className="wish__item w-full flex items-center justify-between mb-6">
-      <div className="flex items-center">
-        <img className="w-40 h-25" src={item.thumbnail} alt="" />
-        <div className="ml-4">
-          <div className="text-2xl font-bold">{item.title}</div>
-          <div className="text-sm">{item.genre}</div>
-          <div className="text-sm">{item.platform}</div>
-          <div className="text-sm">{item.release_date}</div>
+    <div className="wish__item flex items-center justify-between w-full mb-6">
+      <Link to={`/game/${item.id}`}>
+        <div className="flex items-center">
+          <img className="w-40 h-25" src={item.thumbnail} alt="" />
+          <div className="ml-4">
+            <div className="text-2xl font-bold">{item.title}</div>
+            <div className="text-sm">{item.genre}</div>
+            <div className="text-sm">{item.platform}</div>
+            <div className="text-sm">{item.release_date}</div>
+          </div>
         </div>
-      </div>
+      </Link>
 
       <div className="flex items-center gap-4">
         <svg
