@@ -21,9 +21,11 @@ function EmblaCatousel({ slides }: EmblaCatouselProps) {
               <div
                 key={slide.id}
                 onClick={() => setPopupImage(slide.image)}
-                className="embla__slide flex-[0_0_49%] min-w-0 rounded-xl overflow-hidden cursor-pointer">
+                className="embla__slide flex-[0_0_100%] min-w-0 rounded-xl overflow-hidden cursor-pointer sm:flex-[0_0_49%]">
                 <img
                   src={slide.image}
+                  loading="lazy"
+                  decoding="async"
                   alt=""
                   className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
                 />

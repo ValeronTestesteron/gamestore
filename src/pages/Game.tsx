@@ -13,7 +13,7 @@ function Game() {
 
   if (error)
     return (
-      <div className="container mx-auto mt-20 text-3xl font-bold">
+      <div className="container mx-auto mt-20 px-4 text-3xl font-bold sm:px-0">
         Такой игры нет {(error as { data?: { status_message?: string } })?.data?.status_message}
       </div>
     );
@@ -29,9 +29,9 @@ function Game() {
             release_date={data.release_date}
           />
 
-          <div className="container mx-auto mt-10">
-            <div className="grid grid-cols-1 lg:grid-cols-3 items-start gap-8 mb-8">
-              <div className="lg:col-span-2 space-y-4">
+          <div className="container mx-auto mt-10 px-4 sm:px-0">
+            <div className="grid grid-cols-1 lg:grid-cols-3 items-start gap-6 lg:gap-8 mb-8">
+              <div className="lg:col-span-2 min-w-0 space-y-4">
                 <Platforms platforms={data.platform} />
                 <GameDescription description={data.description} />
                 {data.screenshots && <Photos screenshots={data.screenshots} />}

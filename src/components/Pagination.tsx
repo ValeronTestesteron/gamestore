@@ -31,7 +31,7 @@ function Pagination({ totalPages }: PaginationProps) {
   if (paginationRange.length <= 0) return;
 
   return (
-    <div className="flex gap-1 mt-4">
+    <div className="col-span-full flex flex-wrap gap-1 mt-4">
       <button
         className="flex items-center justify-center h-9 w-9 rounded-3xl bg-slate-800 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
         onClick={() => onPrevPage()}

@@ -10,7 +10,7 @@ function Genres() {
   const dispatch = useAppDispatch();
 
   return (
-    <div className="genres flex flex-wrap gap-2 mb-7">
+    <div className="genres flex flex-wrap gap-2 mb-4 md:mb-7">
       {categories.map((item) => (
         <button
           key={item.slug || 'all'}

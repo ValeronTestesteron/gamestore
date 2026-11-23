@@ -13,13 +13,13 @@ function GameSortDropdown() {
   const [activeSortPopup, setActiveSortPopup] = useState(false);
 
   return (
-    <div className="relative inline-block text-left">
+    <div className="relative w-full text-left sm:inline-block sm:w-auto">
       <div
-        className="inline-flex justify-center items-center gap-x-1.5 rounded-md bg-[#181818] px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-slate-800 dark:hover:bg-neutral-800 cursor-pointer"
+        className="flex w-full justify-between items-center gap-x-1.5 rounded-md bg-[#181818] px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-slate-800 dark:hover:bg-neutral-800 cursor-pointer sm:inline-flex sm:w-auto sm:justify-center"
         onClick={() => {
           setActiveSortPopup(!activeSortPopup);
         }}>
-        Сортировать по:
+        <span className="whitespace-nowrap">Сортировать по:</span>
         <svg
           className="w-5 h-5 text-gray-400 transition-transform group-open:rotate-180"
           viewBox="0 0 20 20"
@@ -33,7 +33,7 @@ function GameSortDropdown() {
       </div>
 
       {activeSortPopup && (
-        <div className="absolute right-0 z-10 w-42 origin-top-left rounded-md bg-white shadow-lg focus:outline-none py-1 dark:bg-[#181818]">
+        <div className="absolute right-0 z-10 w-full sm:w-42 origin-top-left rounded-md bg-white shadow-lg focus:outline-none py-1 dark:bg-[#181818]">
           {sortOptions.map((item, index) => (
             <div
               key={index}

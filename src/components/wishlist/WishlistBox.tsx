@@ -9,7 +9,7 @@ function WishlistBox({ items }: WishlistBoxProps) {
   if (!items.length) return <div className="text-lg">Сейчас в вашем листе ничего нет</div>;
 
   return (
-    <div className="wish__box max-w-[650px] w-full">
+    <div className="wish__box max-w-full w-full sm:max-w-[650px]">
       {items.map((item) => (
         <WishlistItem key={item.id} item={item} />
       ))}

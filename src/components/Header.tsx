@@ -1,4 +1,6 @@
 import { useAppDispatch, useAppSelector } from '../redux/store';
+import { useState } from 'react';
+
 import { toggleTheme } from '../redux/slices/themeSlice';
 
 import Search from '../components/ui/Search';
@@ -11,32 +13,56 @@ import { Link } from 'react-router-dom';
 function Header() {
   const theme = useAppSelector((state) => state.themeSlice.theme);
   const wishlist = useAppSelector((state) => state.wishSlice.items);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const dispatch = useAppDispatch();
 
   return (
     <header className="dark:bg-black">
-      <div className="container mx-auto flex items-center">
+      <div className="container mx-auto flex flex-wrap items-center px-4 sm:px-0 sm:pb-0">
         <div className="logo">
           <Link to={'/'}>
-            <img src={logo} className="h-16" alt="" />
+            <img src={logo} className="h-12 sm:h-16" alt="" />
           </Link>
         </div>
-        <nav className="text-black dark:text-white mr-6 ml-auto">
-          <Link to="/wishlist">
-            <div className="relative">
-              <Heart
-                className={`${wishlist.length !== 0 ? 'text-red-700' : 'text-stone-700 dark:text-white'}`}
-              />
-              {wishlist.length !== 0 && (
-                <span className="flex items-center justify-center absolute -top-1 -right-1 w-3 h-3 text-white bg-stone-700 dark:text-stone-700 dark:bg-white rounded-full text-[9px] font-bold pl-[1px]">
-                  {wishlist.length}
-                </span>
-              )}
-            </div>
-          </Link>
+        <nav className="text-black dark:text-white mr-2 ml-auto sm:mr-6">
+          <div className="flex items-center gap-4">
+            <Link to="/wishlist">
+              <div className="relative">
+                <Heart
+                  className={`${wishlist.length !== 0 ? 'text-red-700' : 'text-stone-700 dark:text-white'}`}
+                />
+                {wishlist.length !== 0 && (
+                  <span className="flex items-center justify-center absolute -top-1 -right-1 w-3 h-3 text-white bg-stone-700 dark:text-stone-700 dark:bg-white rounded-full text-[9px] font-bold pl-[1px]">
+                    {wishlist.length}
+                  </span>
+                )}
+              </div>
+            </Link>
+
+            <button
+              type="button"
+              onClick={() => setIsSearchOpen((open) => !open)}
+              className="sm:hidden text-stone-700 dark:text-white cursor-pointer"
+              aria-label={isSearchOpen ? 'Закрыть поиск' : 'Открыть поиск'}
+              aria-expanded={isSearchOpen}>
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                />
+              </svg>
+            </button>
+          </div>
         </nav>
-        <Search className="max-w-[400px] w-full" placeholder="Найти игру" />
-        <div className="theme flex items-center ml-4">
+        <div
+          className={`order-last mt-2 w-full sm:order-none sm:mt-0 sm:w-auto sm:flex-1 max-w-full sm:max-w-[280px] lg:max-w-[350px] mb-2 sm:mb-0 ${
+            isSearchOpen ? 'block' : 'hidden'
+          } sm:block`}>
+          <Search className="w-full" placeholder="Найти игру" />
+        </div>
+        <div className="theme flex items-center ml-2 sm:ml-4">
           {theme === 'dark' ? (
             <svg
               className="w-6 h-6 cursor-pointer"

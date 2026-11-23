@@ -1,12 +1,14 @@
 import { Route, Routes } from 'react-router-dom';
 import { useAppSelector } from './redux/store';
-import { useEffect } from 'react';
+import { lazy, Suspense, useEffect } from 'react';
 
-import Home from './pages/Home';
-import Game from './pages/Game';
-import Wishlist from './pages/Wishlist';
+const Home = lazy(() => import('./pages/Home'));
+const Game = lazy(() => import('./pages/Game'));
+const Wishlist = lazy(() => import('./pages/Wishlist'));
+const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
+
 import Header from './components/Header';
-import NotFoundPage from './pages/NotFoundPage';
+import Spinner from './components/ui/Spinner';
 
 function App() {
   const themeColor = useAppSelector((state) => state.themeSlice.theme);
@@ -20,12 +22,19 @@ function App() {
     <div className="min-h-screen bg-white text-slate-900 dark:bg-black dark:text-white">
       <Header />
 
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/game/:id" element={<Game />} />
-        <Route path="/wishlist" element={<Wishlist />} />
-        <Route path="*" element={<NotFoundPage />} />
-      </Routes>
+      <Suspense
+        fallback={
+          <div className="min-h-screen flex items-center justify-center">
+            <Spinner className="w-12 h-12 animate-spin" />
+          </div>
+        }>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/game/:id" element={<Game />} />
+          <Route path="/wishlist" element={<Wishlist />} />
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
+      </Suspense>
     </div>
   );
 }
