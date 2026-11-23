@@ -72,7 +72,7 @@ function AddGameForm() {
   };
 
   return (
-    <div className="max-w-sm w-full rounded-xl border border-stone-200 bg-white p-6 text-stone-700 shadow-xl transition-colors dark:border-stone-800 dark:bg-[#1e1f21] dark:text-white">
+    <div className="max-w-sm w-full rounded-xl border border-stone-200 bg-white p-4 text-stone-700 shadow-xl transition-colors dark:border-stone-800 dark:bg-[#1e1f21] dark:text-white sm:p-6">
       <h2 className="mb-1 text-xl font-bold text-stone-900 dark:text-white">Добавить в лист</h2>
       <p className="mb-6 text-sm text-stone-500 dark:text-stone-400">
         Заполните данные, чтобы мы добавили игру
@@ -163,7 +163,7 @@ function AddGameForm() {
           {gamePlatformError && (
             <p className="mt-1 mb-2 text-[10px] text-red-600">{gamePlatformError}</p>
           )}
-          <div className="flex gap-6">
+          <div className="flex flex-wrap gap-4 sm:gap-6">
             <label className="flex cursor-pointer items-center gap-2 rounded-md px-2 py-1 text-sm text-stone-700 transition dark:text-stone-200">
               <input
                 type="radio"
@@ -199,7 +199,7 @@ function AddGameForm() {
         <div className="flex gap-3 pt-2">
           <button
             type="submit"
-            className="w-1/3 cursor-pointer rounded-lg bg-red-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-red-500 disabled:cursor-not-allowed disabled:opacity-50">
+            className="flex-1 w-1/3 cursor-pointer rounded-lg bg-red-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-red-500 disabled:cursor-not-allowed disabled:opacity-50 sm:flex-none">
             Добавить
           </button>
           <button
@@ -208,7 +208,7 @@ function AddGameForm() {
               reset();
               setSelectGame(null);
             }}
-            className="w-1/3 cursor-pointer rounded-lg border border-stone-300 bg-transparent px-4 py-2.5 text-sm font-medium text-stone-700 transition hover:bg-stone-100 dark:border-stone-700 dark:bg-[#181818] dark:text-white dark:hover:bg-slate-800">
+            className="flex-1 w-1/3 cursor-pointer rounded-lg border border-stone-300 bg-transparent px-4 py-2.5 text-sm font-medium text-stone-700 transition hover:bg-stone-100 dark:border-stone-700 dark:bg-[#181818] dark:text-white dark:hover:bg-slate-800 sm:flex-none">
             Отмена
           </button>
         </div>

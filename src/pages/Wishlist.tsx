@@ -14,19 +14,19 @@ function Wishlist() {
   useEffect(() => {
     const timer = setTimeout(() => {
       dispatch(clearMessage());
-    }, 2000);
+    }, 1400);
 
     return () => clearTimeout(timer);
   }, [notification]);
 
   return (
-    <div className="container mx-auto mt-10">
-      <h1 className="text-3xl font-bold">Игры в котрые вы бы хотели поиграть:</h1>
+    <div className="container mx-auto mt-10 px-4 sm:px-0">
+      <h1 className="text-2xl font-bold sm:text-3xl">Игры в котрые вы бы хотели поиграть:</h1>
 
-      <div className="flex justify-between gap-6 mt-20">
+      <div className="mt-10 flex flex-col gap-6 sm:mt-20 lg:flex-row lg:justify-between">
         <WishlistBox items={wishlist} />
 
-        <div className="max-w-[600px] w-full">
+        <div className="w-full max-w-[390px] 2xl:max-w-[600px]">
           <AddGameForm />
         </div>
       </div>

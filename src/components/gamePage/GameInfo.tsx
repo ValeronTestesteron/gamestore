@@ -20,7 +20,7 @@ function GameInfo({
   minimum_system_requirements,
 }: GameInfoProps) {
   return (
-    <div className="space-y-6 bg-slate-50 p-6 rounded-2xl border border-slate-100 dark:bg-neutral-900 dark:border-neutral-800">
+    <div className="space-y-6 bg-slate-50 p-4 rounded-2xl border border-slate-100 dark:bg-neutral-900 dark:border-neutral-800 sm:p-6">
       <div>
         <h3 className="text-lg font-bold text-slate-900 tracking-wide border-b border-slate-200 pb-3 mb-4 dark:text-white dark:border-neutral-700">
           Детали издания

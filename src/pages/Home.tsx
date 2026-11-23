@@ -33,9 +33,9 @@ function Home() {
     <>
       <VideoBanner />
 
-      <div className="container w-full mx-auto">
-        <div className="mt-15 mb-12">
-          <h1 className="flex justify-between items-center text-5xl font-bold">
+      <div className="container w-full mx-auto px-4 sm:px-0">
+        <div className="mt-8 mb-8 sm:mt-15 sm:mb-12">
+          <h1 className="flex justify-between items-center text-3xl sm:text-4xl xl:text-5xl font-bold">
             Игры
             {searchParams.size > 0 && (
               <button
@@ -51,16 +51,16 @@ function Home() {
           </h1>
         </div>
 
-        <div className="flex justify-between">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
           <Genres />
           <GameSortDropdown />
         </div>
 
         {error && (
-          <div className="mt-5 text-xl font-bold">{(error as FetchBaseQueryError).status}</div>
+          <div className="mt-7 text-xl font-bold">{(error as FetchBaseQueryError).status}</div>
         )}
 
-        <div className="grid grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-7 lg:mt-5">
           {isLoading ? (
             skeletons
           ) : (

@@ -9,7 +9,7 @@ type ComboboxProps = {
 
 function Combobox({ gameItems, onClearSearch }: ComboboxProps) {
   return (
-    <div className="absolute top-[48px] z-50 w-full bg-white rounded-md max-h-80 overflow-y-auto dark:bg-[#1e1f21]">
+    <div className="absolute top-full z-50 w-full bg-white rounded-md max-h-80 overflow-y-auto dark:bg-[#1e1f21]">
       <div className="px-3 py-2 text-sm text-slate-400 dark:text-neutral-300">
         Результаты поиска: {gameItems?.length}
       </div>

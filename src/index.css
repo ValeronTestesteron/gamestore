@@ -3,7 +3,7 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 * {
-  transition: 0.25s ease-in-out;
+  /*transition: 0.25s ease-in-out;*/
 }
 
 .video-section {

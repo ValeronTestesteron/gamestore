@@ -32,11 +32,19 @@ function VideoBanner() {
   };
 
   return (
-    <div className="video-section relative">
+    <div className="video-section relative max-h-[360px] sm:max-h-[520px] xl:max-h-[650px]">
       <div className="video-background">
-        <video ref={playerRef} className="w-full" src={trailer} autoPlay loop muted></video>
+        <video
+          ref={playerRef}
+          className="w-full"
+          src={trailer}
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="metadata"></video>
       </div>
-      <div className="video-controls">
+      <div className="video-controls right-5! bottom-5! lg:right-[120px]! lg:bottom-[70px]!">
         <div onClick={() => onClickPause()} className="video-controls-button video-play-button">
           <img src={play ? stopIcon : playIcon} alt="" />
         </div>
@@ -45,14 +53,14 @@ function VideoBanner() {
         </div>
       </div>
       <div className="video-content">
-        <div className="container mx-auto">
+        <div className="container mx-auto px-4 sm:px-0">
           <div className="video-logo">
             <img
               src="https://occ-0-769-768.1.nflxso.net/dnm/api/v6/S4oi7EPZbv2UEPaukW54OORa0S8/AAAABeSjwC8CWoIYnAYzhzcVURB8Ocix2yvfolLp4goDoFc-0hO6EkzuTYTQiRx4Z_4jvBR_vyr6bpo8BhtsTwq_UAa8tTDNYv4kig.webp?r=f32"
               alt=""
             />
           </div>
-          <div className="poster-anouns">
+          <div className="poster-anouns flex-wrap">
             <span className="text-white">ONLY ON</span>
             <img
               width="160"

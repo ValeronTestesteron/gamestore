@@ -12,23 +12,29 @@ function WishlistItem({ item }: WishlistItemProps) {
   const dispatch = useAppDispatch();
 
   return (
-    <div className="wish__item flex items-center justify-between w-full mb-6">
-      <Link to={`/game/${item.id}`}>
-        <div className="flex items-center">
-          <img className="w-40 h-25" src={item.thumbnail} alt="" />
-          <div className="ml-4">
-            <div className="text-2xl font-bold">{item.title}</div>
-            <div className="text-sm">{item.genre}</div>
-            <div className="text-sm">{item.platform}</div>
-            <div className="text-sm">{item.release_date}</div>
+    <div className="wish__item flex items-center justify-between gap-3 w-full max-w-[340px] mb-6 md:max-w-none">
+      <Link to={`/game/${item.id}`} className="min-w-0 flex-1">
+        <div className="flex flex-col items-start md:flex-row md:items-center">
+          <img
+            className="w-32 h-20 shrink-0 rounded-lg object-cover md:w-40 md:h-25"
+            src={item.thumbnail}
+            loading="lazy"
+            decoding="async"
+            alt=""
+          />
+          <div className="mt-2 w-full min-w-0 md:mt-0 md:ml-4">
+            <div className="text-base font-bold md:text-2xl">{item.title}</div>
+            <div className="text-xs md:text-sm">{item.genre}</div>
+            <div className="text-xs md:text-sm">{item.platform}</div>
+            <div className="text-xs md:text-sm">{item.release_date}</div>
           </div>
         </div>
       </Link>
 
-      <div className="flex items-center gap-4">
+      <div className="flex shrink-0 items-center gap-2 sm:gap-4">
         <svg
           onClick={() => dispatch(setWishStatus(item.id))}
-          className={`w-6 h-6 cursor-pointer ${item.wishstatus === 'played' ? 'text-stone-700 dark:text-white' : 'text-red-700'}`}
+          className={`w-7 h-7 cursor-pointer sm:w-6 sm:h-6 ${item.wishstatus === 'played' ? 'text-stone-700 dark:text-white' : 'text-red-700'}`}
           viewBox="0 0 24 24"
           fill="none"
           xmlns="http://www.w3.org/2000/svg">
@@ -51,7 +57,7 @@ function WishlistItem({ item }: WishlistItemProps) {
           onClick={() => {
             dispatch(removeGame(item.id));
           }}
-          className="w-5 h-5 cursor-pointer text-stone-700 dark:text-white"
+          className="w-6 h-6 sm:w-5 sm:h-5 cursor-pointer text-stone-700 dark:text-white sm:w-5 sm:h-5"
           viewBox="0 0 20 20"
           xmlns="http://www.w3.org/2000/svg">
           <path

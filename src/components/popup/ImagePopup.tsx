@@ -37,7 +37,7 @@ function ImagePopup({ image, onClear }: ImagePopupProps) {
 
   return createPortal(
     <div
-      className="fixed h-full inset-0 z-50 flex items-center justify-center bg-black/85 p-13 cursor-zoom-out"
+      className="fixed h-full inset-0 z-50 flex items-center justify-center bg-black/85 p-4 sm:p-13 cursor-zoom-out"
       onClick={() => slowCLose()}>
       <svg
         className="w-5 h-5 absolute top-5 right-7 text-stone-700 cursor-pointer"

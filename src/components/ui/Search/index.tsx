@@ -44,7 +44,7 @@ function Search({ className, placeholder }: SearchType) {
     <div className={`search relative flex items-center gap-4 ${className}`}>
       <input
         name="search"
-        className="w-full p-3 pl-12 bg-gray-200 dark:bg-[#1e1f21] dark:text-white rounded-md focus:outline-none"
+        className="w-full p-2.5 pl-10 bg-gray-200 dark:bg-[#1e1f21] dark:text-white rounded-md focus:outline-none text-sm sm:p-3 sm:pl-12 sm:text-base"
         placeholder={placeholder}
         type="text"
         value={searchQuery}
@@ -53,7 +53,7 @@ function Search({ className, placeholder }: SearchType) {
         }}
       />
       <svg
-        className="w-6 h-6 absolute ml-4 left-0 text-dark-gray"
+        className="w-5 h-5 absolute ml-3 left-0 text-dark-gray sm:ml-4 sm:w-6 sm:h-6"
         fill="none"
         stroke="#525151"
         viewBox="0 0 24 24"

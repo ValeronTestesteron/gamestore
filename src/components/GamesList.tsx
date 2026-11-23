@@ -16,19 +16,25 @@ function GamesList({ id, title, thumbnail, release_date, genre, platform }: Game
 
   return (
     <div className="bg-white rounded-xl border border-gray-200 dark:bg-[#1e1f21] dark:border-neutral-700">
-      <div className="relative h-52 w-full overflow-hidden rounded-xl bg-slate-500">
+      <div className="relative h-44 w-full overflow-hidden rounded-xl bg-slate-500 sm:h-52">
         <Link to={`/game/${id}`}>
-          <img src={thumbnail} alt={title} className="h-full w-full object-cover" />
+          <img
+            src={thumbnail}
+            loading="lazy"
+            decoding="async"
+            alt={title}
+            className="h-full w-full object-cover"
+          />
           <div className="absolute flex items-center justify-center top-2 right-3 px-2 py-1 rounded-md text-xs font-semibold bg-slate-900/80 text-white z-1">
             {genre}
           </div>
         </Link>
       </div>
-      <div className="p-5">
-        <h3 className="flex justify-between text-slate-700 line-clamp-2 text-xl font-bold dark:text-white">
+      <div className="p-4 sm:p-5">
+        <h3 className="flex justify-between text-slate-700 line-clamp-2 text-lg font-bold dark:text-white sm:text-xl">
           {title}
           <svg
-            className="w-6 h-6 text-stone-700 dark:text-white cursor-pointer"
+            className="w-5 h-5 shrink-0 text-stone-700 dark:text-white cursor-pointer sm:w-6 sm:h-6"
             onClick={() =>
               dispatch(addGame({ id, title, thumbnail, release_date, genre, platform }))
             }
