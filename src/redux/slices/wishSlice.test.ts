@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 
-import wishSlice, { addGame, removeGame, setWishStatus, clearMessage } from './wishSlice';
+import wishSlice, { addGame } from './wishSlice';
 
 import type { Wishlist } from '../../interfaces';
 

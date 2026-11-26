@@ -7,7 +7,6 @@ interface filterSliceState {
   sortOptions: SortItem[];
   currentPage: number;
   gamePerPage: number;
-  debounceQuery: string;
 }
 
 const initialState: filterSliceState = {
@@ -33,7 +32,6 @@ const initialState: filterSliceState = {
   ],
   currentPage: 1,
   gamePerPage: 12,
-  debounceQuery: '',
 };
 
 const filterSlice = createSlice({
@@ -43,12 +41,9 @@ const filterSlice = createSlice({
     setCurrentPage(state, action: PayloadAction<number>) {
       state.currentPage = action.payload;
     },
-    setDebounceQuery(state, action: PayloadAction<string>) {
-      state.debounceQuery = action.payload;
-    },
   },
 });
 
-export const { setCurrentPage, setDebounceQuery } = filterSlice.actions;
+export const { setCurrentPage } = filterSlice.actions;
 
 export default filterSlice.reducer;

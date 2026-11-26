@@ -6,6 +6,7 @@ import { addGame } from '../../redux/slices/wishSlice';
 import { useGetGamesQuery } from '../../redux/api/gameApi';
 
 import type { GameItem, Wishlist } from '../../interfaces';
+import { useDebounce } from '../../hooks/useDebounce';
 
 interface IForm {
   title: string;
@@ -35,12 +36,14 @@ function AddGameForm() {
   const gamePlatformError = formState.errors['platform']?.message;
   const title = useWatch({ control, name: 'title' });
 
+  const debounceQuery = useDebounce(title, 400);
+
   const searchGame = useMemo(() => {
-    const query = (title ?? '').trim().toLowerCase();
+    const query = (debounceQuery ?? '').trim().toLowerCase();
     if (!query) return [];
 
     return data && data.filter((it) => it.title.toLowerCase().includes(query)).slice(0, 8);
-  }, [data, title]);
+  }, [data, debounceQuery]);
 
   const pickGame = (game: GameItem) => {
     setValue('title', game.title, { shouldValidate: true, shouldDirty: true });

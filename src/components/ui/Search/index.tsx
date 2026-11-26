@@ -1,10 +1,9 @@
-import { useEffect, useMemo, useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../../../redux/store';
+import { useMemo, useState } from 'react';
 
 import { useGetGamesQuery } from '../../../redux/api/gameApi';
-import { setDebounceQuery } from '../../../redux/slices/filterSlice';
 
 import Combobox from '../Combobox/Combobox';
+import { useDebounce } from '../../../hooks/useDebounce';
 
 type SearchType = {
   className: string;
@@ -13,18 +12,9 @@ type SearchType = {
 
 function Search({ className, placeholder }: SearchType) {
   const [searchQuery, setSearchQuery] = useState('');
-  const debounceQuery = useAppSelector((state) => state.filterSlice.debounceQuery);
   const { data = [] } = useGetGamesQuery({});
 
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      dispatch(setDebounceQuery(searchQuery));
-    }, 400);
-
-    return () => clearTimeout(timer);
-  }, [searchQuery]);
+  const debounceQuery = useDebounce(searchQuery, 400);
 
   const filterGames = useMemo(() => {
     const query = debounceQuery.trim().toLowerCase();
