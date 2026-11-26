@@ -8,7 +8,7 @@ const Wishlist = lazy(() => import('./pages/Wishlist'));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 
 import Header from './components/Header';
-import Spinner from './components/ui/Spinner';
+import FullScreenLoader from './components/ui/FullScreenLoader';
 
 function App() {
   const themeColor = useAppSelector((state) => state.themeSlice.theme);
@@ -22,12 +22,7 @@ function App() {
     <div className="min-h-screen bg-white text-slate-900 dark:bg-black dark:text-white">
       <Header />
 
-      <Suspense
-        fallback={
-          <div className="min-h-screen flex items-center justify-center">
-            <Spinner className="w-12 h-12 animate-spin" />
-          </div>
-        }>
+      <Suspense fallback={<FullScreenLoader />}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/game/:id" element={<Game />} />

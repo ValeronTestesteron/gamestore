@@ -26,6 +26,8 @@ React 19 · TypeScript · Redux Toolkit + RTK Query · React Router 7 · React H
   запись сохраняется в localStorage
 - Тёмная тема с сохранением выбора
 - Скелетоны загрузки, попапы через createPortal
+- Ленивая загрузка страниц (React.lazy + Suspense)
+- Адаптивная верстка
 - Страница 404
 
 ## Запуск
@@ -45,6 +47,4 @@ GitHub Pages (project page). `base: '/gamestore/'` в `vite.config.ts`.
 
 ## Планы
 
-- Ленивая загрузка страниц (React.lazy + Suspense)
 - Тесты: Vitest + React Testing Library
-- Адаптив

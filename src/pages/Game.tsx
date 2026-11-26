@@ -4,8 +4,8 @@ import { useGetGameByIdQuery } from '../redux/api/gameApi';
 import Banner from '../components/Banner';
 import Platforms from '../components/gamePage/Platforms';
 import GameDescription from '../components/gamePage/GameDescription';
-import Photos from '../components/gamePage/Photos';
 import GameInfo from '../components/gamePage/GameInfo';
+import Photos from '../components/gamePage/Photos';
 
 function Game() {
   const { id } = useParams();

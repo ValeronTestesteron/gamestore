@@ -1,6 +1,9 @@
-import { useState } from 'react';
+import { lazy, Suspense, useState } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
-import ImagePopup from '../../popup/ImagePopup';
+
+const ImagePopup = lazy(() => import('../../popup/ImagePopup'));
+
+import FullScreenLoader from '../FullScreenLoader';
 
 import type { ShortScreenshots } from '../../../interfaces';
 
@@ -35,7 +38,11 @@ function EmblaCatousel({ slides }: EmblaCatouselProps) {
         </div>
       </div>
 
-      {popupImage && <ImagePopup image={popupImage} onClear={() => setPopupImage(null)} />}
+      {popupImage && (
+        <Suspense fallback={<FullScreenLoader />}>
+          <ImagePopup image={popupImage} onClear={() => setPopupImage(null)} />
+        </Suspense>
+      )}
     </>
   );
 }
