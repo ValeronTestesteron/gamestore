@@ -27,6 +27,7 @@ React 19 · TypeScript · Redux Toolkit + RTK Query · React Router 7 · React H
 - Тёмная тема с сохранением выбора
 - Скелетоны загрузки, попапы через createPortal
 - Ленивая загрузка страниц (React.lazy + Suspense)
+- Тесты: Vitest + React Testing Library
 - Адаптивная верстка
 - Страница 404
 
@@ -44,7 +45,3 @@ npm run build   # прод-сборка
 ## Деплой
 
 GitHub Pages (project page). `base: '/gamestore/'` в `vite.config.ts`.
-
-## Планы
-
-- Тесты: Vitest + React Testing Library

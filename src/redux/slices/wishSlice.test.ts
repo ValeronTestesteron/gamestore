@@ -1,6 +1,6 @@
-import { describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import wishSlice, { addGame } from './wishSlice';
+import wishSlice, { addGame, clearMessage, removeGame, setWishStatus } from './wishSlice';
 
 import type { Wishlist } from '../../interfaces';
 
@@ -33,7 +33,16 @@ const testGame2: Wishlist = {
   wishstatus: 'played',
 };
 
+const notPlayedGame: Wishlist = {
+  ...testGame2,
+  wishstatus: 'notplayed',
+};
+
 describe('wishSlice', () => {
+  beforeEach(() => {
+    localStorage.clear();
+  });
+
   it('Инициализация Wishlist из localStorage - значения еще небыло', async () => {
     localStorage.removeItem('wishlist');
     vi.resetModules();
@@ -124,5 +133,124 @@ describe('wishSlice', () => {
     const savedItem = JSON.parse(localStorage.getItem('wishlist') ?? '[]');
 
     expect(savedItem).toEqual([testGame]);
+  });
+
+  it('Добавление игры без статуса сохраняет статус played', () => {
+    const initialState = {
+      items: [],
+      message: null,
+    };
+
+    const state = wishSlice(initialState, addGame({ ...testGame, wishstatus: undefined }));
+
+    expect(state.items[0].wishstatus).toBe('played');
+  });
+
+  it('Добавление игры со статусом notplayed сохраняет статус played', () => {
+    const initialState = {
+      items: [],
+      message: null,
+    };
+
+    const state = wishSlice(initialState, addGame({ ...testGame, wishstatus: 'notplayed' }));
+
+    expect(state.items[0].wishstatus).toBe('played');
+  });
+
+  it('При успешном добавлении сообщение не устанавливается', () => {
+    const initialState = {
+      items: [],
+      message: null,
+    };
+
+    const state = wishSlice(initialState, addGame(testGame));
+
+    expect(state.message).toBeNull();
+  });
+
+  it('Повторное добавление не записывает игру в пустой localStorage', () => {
+    const initialState = {
+      items: [testGame],
+      message: null,
+    };
+
+    wishSlice(initialState, addGame(testGame1));
+
+    expect(localStorage.getItem('wishlist')).toBeNull();
+  });
+
+  it('Переключение статуса игры с played на notplayed', () => {
+    const state = wishSlice({ items: [testGame], message: null }, setWishStatus(testGame.id));
+
+    expect(state.items[0].wishstatus).toBe('notplayed');
+  });
+
+  it('Переключение статуса игры с notplayed на played', () => {
+    const state = wishSlice({ items: [notPlayedGame], message: null }, setWishStatus(notPlayedGame.id));
+
+    expect(state.items[0].wishstatus).toBe('played');
+  });
+
+  it('Установка статуса played, если у игры нет статуса', () => {
+    const gameWithoutStatus: Wishlist = { ...testGame, wishstatus: undefined };
+
+    const state = wishSlice({ items: [gameWithoutStatus], message: null }, setWishStatus(testGame.id));
+
+    expect(state.items[0].wishstatus).toBe('played');
+  });
+
+  it('Переключение статуса не меняет остальные игры', () => {
+    const state = wishSlice(
+      { items: [testGame1, testGame2], message: null },
+      setWishStatus(testGame2.id),
+    );
+
+    expect(state.items[0]).toEqual(testGame1);
+    expect(state.items[1].wishstatus).toBe('notplayed');
+  });
+
+  it('Попытка переключить статус несуществующей игры', () => {
+    const state = wishSlice({ items: [testGame], message: null }, setWishStatus(999));
+
+    expect(state.items).toEqual([testGame]);
+  });
+
+  it('Сохранение измененного статуса в localStorage', () => {
+    wishSlice({ items: [testGame], message: null }, setWishStatus(testGame.id));
+
+    const savedItems = JSON.parse(localStorage.getItem('wishlist') ?? '[]');
+
+    expect(savedItems).toEqual([{ ...testGame, wishstatus: 'notplayed' }]);
+  });
+
+  it('Удаление игры из Wishlist', () => {
+    const state = wishSlice(
+      { items: [testGame1, testGame2], message: null },
+      removeGame(testGame1.id),
+    );
+
+    expect(state.items).toEqual([testGame2]);
+    expect(state.message).toBe('Игра удалена из списка');
+  });
+
+  it('Сохранение Wishlist после удаления игры в localStorage', () => {
+    wishSlice({ items: [testGame1, testGame2], message: null }, removeGame(testGame1.id));
+
+    const savedItems = JSON.parse(localStorage.getItem('wishlist') ?? '[]');
+
+    expect(savedItems).toEqual([testGame2]);
+  });
+
+  it('Попытка удалить несуществующую игру', () => {
+    const state = wishSlice({ items: [testGame], message: null }, removeGame(999));
+
+    expect(state.items).toEqual([testGame]);
+    expect(state.message).toBe('Игра удалена из списка');
+  });
+
+  it('Очистка сообщения', () => {
+    const state = wishSlice({ items: [], message: 'Игра удалена из списка' }, clearMessage());
+
+    expect(state.message).toBeNull();
   });
 });
